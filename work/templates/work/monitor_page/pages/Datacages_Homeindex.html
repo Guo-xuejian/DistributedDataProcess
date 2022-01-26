@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="{% static 'work/css/../../../../static/work/images/Datacages_Homeindex.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'work/css/ProgressBarWars.css' %}" rel="stylesheet" />
+    <link href="{% static 'work/css/index.css' %}" rel="stylesheet" />
+    <link href="{% static 'work/js/index.js' %}" />
+    <style type="text/css">
+        *{padding: 0;margin: 0}
+        .loadEffect{  width: 100px;  height: 100px;  position: relative;  margin: 0 auto; top: 26%}
+        .loadEffect span{animation: load 1.04s ease infinite;  display: inline-block;  width: 30px;  height: 10px;  border-top-left-radius: 5px;  border-bottom-left-radius: 5px;  background: lightgreen;  position: absolute;   }
+        .loadEffect span:nth-child(1){  left: 0;  top: 50%;  margin-top:-5px;  animation-delay:0.13s;  }
+        .loadEffect span:nth-child(2){  left: 10px;  top: 20px;  transform: rotate(45deg);  animation-delay:0.26s;  }
+        .loadEffect span:nth-child(3){  left: 50%;  top: 10px;  margin-left: -15px;  transform: rotate(90deg);  animation-delay:0.39s;  }
+        .loadEffect span:nth-child(4){  top: 20px;  right:10px;  transform: rotate(135deg);  animation-delay:0.52s;  }
+        .loadEffect span:nth-child(5){  right: 0;  top: 50%;  margin-top:-5px;  transform: rotate(180deg);  animation-delay:0.65s;  }
+        .loadEffect span:nth-child(6){  right: 10px;  bottom:20px;  transform: rotate(225deg);  animation-delay:0.78s;  }
+        .loadEffect span:nth-child(7){  bottom: 10px;  left: 50%;  margin-left: -15px;  transform: rotate(270deg);  animation-delay:0.91s;  }
+        .loadEffect span:nth-child(8){  bottom: 20px;  left: 10px;  transform: rotate(315deg);  animation-delay:1.04s;  }
+        @keyframes load{
+            0%{
+                opacity: 1;
+            }
+            100%{
+                opacity: 0.2;
+            }
+        }
+        html,body{width: 100%;height: 100%}
+        #loading{background-color: #181e20;opacity: 0.5;width: 100%;height: 100%;position: fixed;z-index: 999}
+    </style>
+    <script src="{% static 'work/js/jquery.js' %}"></script>
+    <script src="{% static 'work/js/echarts-all.js' %}"></script>
+    <script src="{% static 'work/js/ProgressBarWars.js' %}"></script>
+    <style>
+        *{padding: 0;margin: 0}
+        .progress{
+            margin-top: 30px;
+        }
+        .down_span{color: #dfdede;font-size: 12px;font-weight: lighter}
+        h3,ul,li{margin:0;padding:0; list-style:none;}
+        .scrollbox{ width: 268px; margin: 0 auto;  }
+        #scrollDiv1{width:268px;height:280px; overflow:hidden;}/*这里的高度和超出隐藏是必须的*/
+        #scrollDiv1 ul li{height:66px; width:259px; ;background-color: #07325e; overflow:hidden; margin-bottom: 4px;color: #dfdede;font-size: 14px;padding: 0 9px 0 9px;line-height: 30px;position: relative}
+        #scrollDiv1 ul li span{position: absolute;bottom:5px;right: 16px;display: block;width: 68px;height: 18px;text-align: center;color: #081e49;background-color: #69c200;line-height: 18px}
+        #scrollDiv2{width:268px;height:280px; overflow:hidden;}/*这里的高度和超出隐藏是必须的*/
+        #scrollDiv2 ul li{height:66px; width:259px; ;background-color: #07325e; overflow:hidden; margin-bottom: 4px;color: #dfdede;font-size: 14px;padding: 0 9px 0 9px;line-height: 30px;position: relative}
+        #scrollDiv2 ul li span{position: absolute;bottom:5px;right: 16px;display: block;width: 68px;height: 18px;text-align: center;color: #081e49;background-color: #69c200;line-height: 18px}
+        .sent-div{
+            width: 98%;
+            height: 98%;
+            margin: 0 auto;
+
+        }
+    </style>
+
+
+    <title>大数据分机处理监控平台</title>
+</head>
+<body style="background-color: #06164A; overflow: hidden">
+
+<!--标题栏-->
+<div class="Hometitlebox">
+{#    <a style=" color: #00e4ff;" href="#">大数据分机处理监控平台</a>#}
+    <span style=" color: #00e4ff;">大数据分机处理监控平台</span>
+</div>
+
+<!--动效显示-->
+{% for task_info in task_infos %}
+<div class="no" style="left: 50%;top: 90%;width: 900px;margin: 0 auto">
+    <div class="no-bd" style="height: 50px">
+      <ul>
+        <li style="font-size: 20px;margin-top: 20px">总体任务上传进度【当前上传总数/最终应上传总数】</li>
+      </ul>
+    </div>
+    <div class="no-hd"style="height: 50px">
+      <ul>
+        <li style="font-size: 20px;margin-top: 15px"><span id="upload_num">{{ task_info.upload_num }}</span>/<span id="data_sets_all_num">{{ task_info.assignment_all }}</span> </li>
+      </ul>
+    </div>
+    <div class="no-bd" style="height: 50px">
+      <ul>
+        <li style="font-size: 20px;margin-top: 20px">各任务上传进度【任务数据集已分配数量/上交数量/总数】</li>
+      </ul>
+    </div>
+</div>
+{% endfor %}
+{% for task in task_all %}
+    <div class="no" style="left: 50%;top: 50%;width: 900px;margin: 0 auto">
+        <div class="no-hd"style="height: 50px">
+          <ul>
+            <li style="font-size: 20px;margin-top: 15px">
+                <span id="{{ task.task_name }}_allocated">{{ task.task_allocated }}</span>/<span id="{{ task.task_name }}_upload">{{ task.task_upload }}</span>/{{ task.task_num }}
+            </li>
+            <li style="font-size: 20px;margin-top: 20px">{{ task.task_name }}</li>
+          </ul>
+    </div>
+</div>
+{% endfor %}
+<div class="map" style="height: 60%;width: 60%;margin: 0 auto; margin-top: 5%">
+        <div class="map1" ></div>
+        <div class="map2" style="height: 100%;width: 50%;"></div>
+        <div class="map3" style="height: 110%;width: 50%;"></div>
+    </div>
+<!--侧边浮窗-->
+{% for task_info in task_infos %}
+<div class="fltoutbox leftbox">
+    <!--左上分析内容放置框-->
+    <div class="analyzemsgbgbox" style="height: 350px;margin-top: 100px">
+        <div class="fltdecarround fltdecarroundleft fltdecarroundtop"></div>
+        <div class="fltdecarround fltdecarroundtop fltdecarroundright "></div>
+        <div class="fltdecarround fltdecarroundleft fltdecarroundbottom"></div>
+        <div class="fltdecarround fltdecarroundbottom fltdecarroundright "></div>
+        <span class="analyzedatashowtitle" style="line-height: 66px;margin-left: 38px">【当前已分发数据集】——<span id="show_allocated_num">{{ task_info.allocated_num }}</span></span>
+         <div id="scrollDiv1">
+            <ul id="the_left_up">
+                {% for data_set in task_info.allocated_data_sets %}
+                    <li id="allocated_data_set_{{ data_set.data_set_id }}">{{ data_set.data_set_name }}
+                        <span>{{ data_set.IP }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $("#scrollDiv1").Scroll({line:1,speed:900,timer:1000,up:"but_up",down:"but_down"});
+        </script>
+    </div>
+    <!--左下分析内容放置框-->
+    <div class="analyzemsgbgbox" style="margin-top: 10px; height: 350px;overflow: hidden;">
+        <div class="fltdecarround fltdecarroundleft fltdecarroundtop"></div>
+        <div class="fltdecarround fltdecarroundtop fltdecarroundright "></div>
+        <div class="fltdecarround fltdecarroundleft fltdecarroundbottom"></div>
+        <div class="fltdecarround fltdecarroundbottom fltdecarroundright "></div>
+        <span class="analyzedatashowtitle" style="line-height: 66px;margin-left: 38px">【当前未分发数据集】——<span id="show_unallocated_num">{{ task_info.assignment_all }}</span></span>
+        <div class="scrollbox">
+            <div id="scrollDiv2">
+                <ul id="the_left_down">
+                    {% for data_set in task_info.unallocated_data_sets %}
+                        <li id="unallocated_data_sets">{{ data_set }}
+                            <span>未分配</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <script type="text/javascript">
+                    $("#scrollDiv2").Scroll({line:1,speed:800,timer:1000,up:"but_up",down:"but_down"});
+            </script>
+        </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+<div class="fltoutbox rightbox">
+    <div style="height: 70px; margin-top: 40px">
+    </div>
+    <!--右上分析内容放置框-->
+    <div class="analyzemsgbgbox " style=" margin-right: 2px;padding-bottom: 29px; height: 600px;overflow: hidden">
+        <span class="analyzedatashowtitle">【IP申请记录】</span>
+        <div class="no" style="left: 50%;top: 50%;width: 100%;margin: 0 auto; ">
+            <div class="no-hd"style="height: 40px" id="IP_condition_show">
+              {% for upload_info in task_upload %}
+                <ul style="margin-top: -5px">
+                    <li style="font-size: 15px;margin-top: 15px">{{ upload_info.IP }}</li>
+                    <li style="font-size: 15px;margin-top: 15px">{{ upload_info.upload_times_today }}</li>
+                    <li style="font-size: 20px;margin-top: 15px">{{ upload_info.upload_times }}</li>
+                </ul>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="fltdecarround fltdecarroundleft fltdecarroundbottom"></div>
+        <div class="fltdecarround fltdecarroundbottom fltdecarroundright "></div>
+    </div>
+</div>
+</body>
+<script>
+function completion() {
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.querySelector(".bar1 .chart"));
+
+  var data = [90, 80, 75, 65, 65];
+  var titlename = ["javascript", "VUE", "jQuery", "HTML5", "CSS3"];
+  var valdata = ["精通", "熟练", "熟练", "掌握", "掌握"];
+  var myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+  option = {
+    //图标位置
+    grid: {
+      top: "10%",
+      left: "22%",
+      bottom: "10%"
+    },
+    xAxis: {
+      show: false
+    },
+    yAxis: [
+      {
+        show: true,
+        data: titlename,
+        inverse: true,
+        axisLine: {
+          show: false
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          color: "#fff",
+
+          rich: {
+            lg: {
+              backgroundColor: "#339911",
+              color: "#fff",
+              borderRadius: 15,
+              // padding: 5,
+              align: "center",
+              width: 15,
+              height: 15
+            }
+          }
+        }
+      },
+      {
+        show: true,
+        inverse: true,
+        data: valdata,
+        axisLabel: {
+          textStyle: {
+            fontSize: 12,
+            color: "#fff"
+          }
+        }
+      }
+    ],
+    series: [
+      {
+        name: "条",
+        type: "bar",
+        yAxisIndex: 0,
+        data: data,
+        barCategoryGap: 50,
+        barWidth: 10,
+        itemStyle: {
+          normal: {
+            barBorderRadius: 20,
+            color: function (params) {
+              var num = myColor.length;
+              return myColor[params.dataIndex % num];
+            }
+          }
+        },
+        label: {
+          normal: {
+            show: true,
+            position: "inside",
+            formatter: "{c}%"
+          }
+        }
+      },
+      {
+        name: "框",
+        type: "bar",
+        yAxisIndex: 1,
+        barCategoryGap: 50,
+        data: [100, 100, 100, 100, 100],
+        barWidth: 15,
+        itemStyle: {
+          normal: {
+            color: "none",
+            borderColor: "#00c1de",
+            borderWidth: 3,
+            barBorderRadius: 15
+          }
+        }
+      }
+    ]
+  };}
+</script>
+<script src="{% static 'work/jquery.min.js' %}"></script>
+<script type="text/javascript">
+    setInterval("update()",5000);
+    function update() {
+        jQuery.noConflict();
+       jQuery.ajax({
+            url: "{% url 'update_data_try' %}",
+            data: jQuery(this).serialize(),
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+                let i;
+                // 更新中间部分各个任务的分发和上传情况
+                console.log(data['task_all'][0]['task_allocated'])
+                var allocated;
+                var allocated_use;
+                for (i = 0; i < data['task_all'].length; i++) {
+                    allocated = data['task_all'][i]['task_name']
+                    {#console.log(data['task_all'][i]['task_name'])#}
+                    allocated_use = allocated.replace('+', '_')
+                    {#console.log(allocated_use)#}
+                    jQuery('#' + allocated_use + '_allocated').html(data['task_all'][i]['task_allocated'])
+                    jQuery('#' + allocated_use + '_upload').html(data['task_all'][i]['task_upload'])
+                }
+                // 左上角的已分配数据集数量更新
+                jQuery("#show_allocated_num").html(data['task_infos'][0]['allocated_num'])
+                // 左下角的未分配数据集数量更新
+                jQuery("#show_unallocated_num").html(data['task_infos'][0]['unallocated_num'])
+                // 中间的总体任务上传数量更新
+                jQuery("#upload_num").html(data['task_infos'][0]['upload_num'])
+                {#console.log(data['task_infos'][0]['upload_num'])#}
+                // 中间的总体任务数据集总数更新
+                jQuery("#data_sets_all_num").html(data['task_infos'][0]['assignment_all'])
+                // 右边的申请数据的IP情况更新
+                console.log(data['task_upload'])
+                let IP_list = '';
+                for (let j = 0; j < data['task_upload'].length; j++) {
+                    {#IP_list += data['task_upload'][i]#}
+                    {#console.log(data['task_upload'][j])#}
+                    IP_list += '<ul style="margin-top: -5px">'+
+                        '<li style="font-size: 15px;margin-top: 15px">'+data['task_upload'][j]['IP']+'</li>'+
+                        '<li style="font-size: 15px;margin-top: 15px">'+data['task_upload'][j]['upload_times_today']+'</li>'+
+                        '<li style="font-size: 15px;margin-top: 15px">'+data['task_upload'][j]['upload_times']+'</li>'+
+                        '</ul>'
+                }
+                jQuery("#IP_condition_show").html(IP_list)
+
+                // 左上角的动态内容更新
+                {#console.log(data['task_infos'])#}
+                let data_set_left_up = '';
+                for (i = 0; i < data['task_infos'][0]['allocated_data_sets'].length; i++) {
+                    data_set_left_up += '<li id="' + data['task_infos'][0]['allocated_data_sets'][i]['data_set_id'] + '">' + data['task_infos'][0]['allocated_data_sets'][i]['data_set_name'] + '<span>' + data['task_infos'][0]['allocated_data_sets'][0]['IP'] + '</span>' + '</li>'
+                }
+                jQuery("#the_left_up").html(data_set_left_up)
+                // 左下角的动态内容更新
+                let data_set_left_down = '';
+                for (let j = 0; j < data['task_infos'][0]['unallocated_data_sets'].length; j++) {
+                    {#console.log(data['task_infos'][0]['allocated_data_sets'][j])#}
+                    data_set_left_down += '<li>' + data['task_infos'][0]['allocated_data_sets'][j] + '<span>' + '未分配' + '</span>' + '</li>'
+                }
+                jQuery("#the_left_down").html(data_set_left_down)
+            }
+        })
+       }
+</script>
+</html>

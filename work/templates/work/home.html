@@ -1,0 +1,57 @@
+{% extends "work/base.html" %}
+{% load static %}
+{% block content %}
+    {% for task_info in task_infos %}
+        <article class="media content-section">
+          <div class="media-body" id="data1">
+            <h2><a class="article-title" href="#">{{ task_info.task }}</a></h2>
+            <p class="article-content">数据集总数——{{ task_info.num_all }}</p>
+            <p class="article-content">未分配总数——<span id="num_all{{ task_info.task_id }}">{{ task_info.unallocated_num }}</span></p>
+            <p class="article-content">已分配总数——{{ task_info.allocated }}</p>
+            <span id="con" style="white-space: normal !important;"></span>
+            <div >
+                  <a style="width: 10px;display: inline" class="mr-2" id="data_set{{ task_info.task_id }}" href="#">{{ task_info.unallocated }}</a>
+            </div>
+            <p class="article-content">参与IP——</p>
+            <div>
+                {% for ip in task_info.ips %}
+                    <span>{{ ip }}|</span>
+                {% endfor %}
+            </div>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+{% block script_extends %}
+    <script src="{% static 'work/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        setInterval("update()",5000);
+        function update() {
+            jQuery.noConflict();
+           jQuery.ajax({
+                url: "{% url 'update_data' %}",
+                data: jQuery(this).serialize(),
+                type: "POST",
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data['num_all'])
+                    the_assign = eval('('+data['assign']+')')
+                    console.log(data['data_sets'])
+                    {% for task_info in task_infos %}
+                        var arr = data['data_sets'][{{ task_info.task_id }}];
+                        var list = [];
+                        var stry = '';
+                        if (arr != null){
+                            for (var i=0;i<arr.length;i++){
+                                list[i] = arr[i]+'  '
+                                stry += arr[i]
+                            }
+                        }
+                        jQuery("#num_all{{ task_info.task_id }}").html(data['num_all'][{{ task_info.task_id }}])
+                        jQuery("#data_set{{ task_info.task_id }}").html(list)
+                    {% endfor %}
+                }
+            });
+            }
+    </script>
+{% endblock %}

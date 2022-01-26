@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'work/main.css' %}">
+
+    {% if title %}
+        <title>任务分配  - {{ title }}</title>
+    {% else %}
+        <title>任务分配</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{% url 'site-home' %}">任务分配</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <!-- Navbar Left Side -->
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{% url 'site-home' %}">主页</a>
+              <a class="nav-item nav-link" href="{% url 'dashboard' %}">监控面板</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+{#                {% if request.session.is_login %}#}
+{#                  <a class="nav-item nav-link" href="{% url 'get_data' %}">获取数据</a>#}
+{#                  <a class="nav-item nav-link" href="{% url 'upload_data_file' %}">上传数据</a>#}
+{#                  <a class="nav-item nav-link" href="{% url 'logout' %}">登出</a>#}
+{#                {% endif %}#}
+{#                {% if not request.session.is_login %}#}
+{#                    <a class="nav-item nav-link" href="{% url 'login' %}">登录</a>#}
+{#                    <a class="nav-item nav-link" href="#">注册</a>#}
+{#                {% endif %}#}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+                <script>
+                    {% for msg in messages %}
+                        alert('{{ msg.message }}');
+                    {% endfor %}
+                </script>
+            {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>快速熟悉</h3>
+            <p class='text-muted'>您可能需要完成以下事项：
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">
+                    1 <a href="#"></a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    2 <a href="#"></a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    3 <a href="#"></a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    4 <a href="{% url 'timer' %}">启动定时器</a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    5 <a href="{% url 'predict_download' %}">测试下载预测结果</a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    6 <a href="{% url 'file_aggregate' %}">文件聚合</a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    7 <a href="{% url 'delete_all' %}">回到原始状态</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    {% block script_extends %}{% endblock %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{#    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
